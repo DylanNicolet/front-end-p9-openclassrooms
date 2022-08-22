@@ -27,7 +27,7 @@ function dateSort() {
   }
 }
 
-//Fix Bug report - Bills here
+//Bug report - Bills: Added custom sorting function using dates
 const rows = (data) => {
   if(data && data.length){
     let sortedData = data.sort(dateSort())
