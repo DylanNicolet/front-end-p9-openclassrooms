@@ -16,11 +16,26 @@ const row = (bill) => {
         ${Actions(bill.fileUrl)}
       </td>
     </tr>
-    `)
-  }
+  `)
+}
 
+//date sort function
+function dateSort() {
+  return function (a,b) {
+    let result = (new Date(a.date) > new Date(b.date)) ? -1 : (new Date(a.date) < new Date(b.date)) ? 1 : 0
+    return result
+  }
+}
+
+//Fix Bug report - Bills here
 const rows = (data) => {
-  return (data && data.length) ? data.map(bill => row(bill)).join("") : ""
+  if(data && data.length){
+    let sortedData = data.sort(dateSort())
+    return sortedData.map(bill => row(bill)).join("")
+  }
+  else{
+    return ""
+  }
 }
 
 export default ({ data: bills, loading, error }) => {
