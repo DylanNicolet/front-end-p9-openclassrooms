@@ -68,7 +68,7 @@ export default (bill) => {
         <div class="col-sm">
           <label for="file" class="bold-label">Fee</label>
             <div class='input-field input-flex file-flex'>
-            <span id="file-name-admin">${bill.fileName}</span>
+            <span id="file-name-admin">${bill.fileName === null? "No files attached" : bill.fileName}</span>
             <div class='icons-container'>
               <span id="icon-eye-d" data-testid="icon-eye-d" data-bill-url="${bill.fileUrl}"> ${eyeWhite} </span>
             </div>
