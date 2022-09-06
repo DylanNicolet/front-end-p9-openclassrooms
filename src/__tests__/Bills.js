@@ -19,5 +19,28 @@ describe("Given I am connected as an employee", () => {
       const datesSorted = [...dates].sort(antiChrono)
       expect(dates).toEqual(datesSorted)
     })
+    
+    //Added: Unit testing to increase views/Bills component coverage report to 100%
+    test("When data is Loading, Loading... text should be rendered", () => {
+      const html = BillsUI({ data: bills, loading: true})
+      document.body.innerHTML = html
+      expect(screen.getAllByText('Loading...')).toBeTruthy()
+    })
+
+    describe("When error is detected", () => {
+      test("Without empty error description, then ErrorPage should be rendered without description", () => {
+        const html = BillsUI({ data: bills, error: " "})
+        document.body.innerHTML = html
+        expect(screen.getAllByText('Erreur')).toBeTruthy()
+        expect(screen.getByTestId('error-message').innerHTML.trim().length).toBe(0)
+      })
+      test("With an error message, then ErrorPage should be rendered with the message as description", () => {
+        const errorMessage = "Not connected to the internet"
+        const html = BillsUI({ data: bills, error: errorMessage})
+        document.body.innerHTML = html
+        expect(screen.getAllByText(errorMessage)).toBeTruthy()
+      })
+    })
+    
   })
 })
