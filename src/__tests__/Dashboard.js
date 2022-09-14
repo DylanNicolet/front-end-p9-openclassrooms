@@ -176,29 +176,75 @@ describe('Given I am connected as Admin, and I am on Dashboard page, and I click
 
 describe('Given I am connected as Admin and I am on Dashboard page and I clicked on a bill', () => {
   describe('When I click on the icon eye', () => {
-    test('A modal should open', () => {
-      Object.defineProperty(window, 'localStorage', { value: localStorageMock })
-      window.localStorage.setItem('user', JSON.stringify({
-        type: 'Admin'
-      }))
-      const html = DashboardFormUI(bills[0])
-      document.body.innerHTML = html
-      const onNavigate = (pathname) => {
-        document.body.innerHTML = ROUTES({ pathname })
-      }
-      const firestore = null
-      const dashboard = new Dashboard({
-        document, onNavigate, firestore, bills, localStorage: window.localStorage
+    describe("When an image is present in the database", () => {
+      test('A modal should open', () => {
+        Object.defineProperty(window, 'localStorage', { value: localStorageMock })
+        window.localStorage.setItem('user', JSON.stringify({
+          type: 'Admin'
+        }))
+        const html = DashboardFormUI(bills[0])
+        document.body.innerHTML = html
+        const onNavigate = (pathname) => {
+          document.body.innerHTML = ROUTES({ pathname })
+        }
+        const firestore = null
+        const dashboard = new Dashboard({
+          document, onNavigate, firestore, bills, localStorage: window.localStorage
+        })
+  
+        const handleClickIconEye = jest.fn(dashboard.handleClickIconEye)
+        const eye = screen.getByTestId('icon-eye-d')
+        eye.addEventListener('click', handleClickIconEye)
+        userEvent.click(eye)
+        expect(handleClickIconEye).toHaveBeenCalled()
+  
+        const modale = screen.getByTestId('modaleFileAdmin')
+        expect(modale).toBeTruthy()
       })
+    })
 
-      const handleClickIconEye = jest.fn(dashboard.handleClickIconEye)
-      const eye = screen.getByTestId('icon-eye-d')
-      eye.addEventListener('click', handleClickIconEye)
-      userEvent.click(eye)
-      expect(handleClickIconEye).toHaveBeenCalled()
+    describe("When no image is present in the database", () => {
+      test('Then a no justification text is displayed instead of an image', () => {
+        Object.defineProperty(window, 'localStorage', { value: localStorageMock })
+        window.localStorage.setItem('user', JSON.stringify({
+          type: 'Admin'
+        }))
 
-      const modale = screen.getByTestId('modaleFileAdmin')
-      expect(modale).toBeTruthy()
+        const bill = {
+          "id": "47qAXb6fIm2zOKkLzMro",
+          "vat": "80",
+          "fileUrl": null,
+          "status": "accepted",
+          "type": "Hôtel et logement",
+          "commentAdmin": "ok",
+          "commentary": "séminaire billed",
+          "name": "encore",
+          "fileName": "preview-facture-free-201801-pdf-1.jpg",
+          "date": "2004-04-04",
+          "amount": 400,
+          "email": "a@a",
+          "pct": 20
+        }
+        const html = DashboardFormUI(bill)
+        document.body.innerHTML = html
+        const onNavigate = (pathname) => {
+          document.body.innerHTML = ROUTES({ pathname })
+        }
+        const firestore = null
+        const dashboard = new Dashboard({
+          document, onNavigate, firestore, bills, localStorage: window.localStorage
+        })
+  
+        const handleClickIconEye = jest.fn(dashboard.handleClickIconEye)
+        const eye = screen.getByTestId('icon-eye-d')
+        eye.addEventListener('click', handleClickIconEye)
+        userEvent.click(eye)
+        expect(handleClickIconEye).toHaveBeenCalled()
+  
+        const modale = screen.getByTestId('modaleFileAdmin')
+        expect(modale).toBeTruthy()
+        expect(screen.getAllByText('No justification image to display')).toBeTruthy()
+      })
     })
   })
 })

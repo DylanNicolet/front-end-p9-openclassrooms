@@ -31,6 +31,7 @@ export default class NewBill {
         this.fileName = fileName
       })
     }
+    
     else{
       alert("Incorrect image type, please use jpg, jpeg or png")
       this.document.querySelector(`input[data-testid="file"]`).value = ""
