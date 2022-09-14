@@ -73,7 +73,7 @@ describe("Given I am connected as an employee", () => {
     })
 
     describe("When I click the Eye Icon on a bill", () => {
-      test("Then a modal should open with the proper img inside", () => {
+      test('A modal should open', () => {
         Object.defineProperty(window, 'localStorage', { value: localStorageMock })
         window.localStorage.setItem('user', JSON.stringify({
           type: 'Employee'
@@ -85,20 +85,18 @@ describe("Given I am connected as an employee", () => {
         }
         const firestore = null
         const billss = new Bills({
-          document, onNavigate, firestore, localStorage: window.localStorage
+          document, onNavigate, firestore, bills, localStorage: window.localStorage
         })
+  
+        const eye = document.querySelector(`div[data-testid="icon-eye"]`)
+        const handleClickIconEye = jest.fn(billss.handleClickIconEye(eye))
 
-        const iconEye = document.querySelector(`div[data-testid="icon-eye"]`)
-        const handleClickIconEye = jest.fn((e) => billss.handleClickIconEye(iconEye))
-
-        iconEye.addEventListener("click", handleClickIconEye(iconEye))
-
-        fireEvent.click(iconEye)
+        eye.addEventListener('click', handleClickIconEye)
+        userEvent.click(eye)
         expect(handleClickIconEye).toHaveBeenCalled()
-        
-        const imageURL = iconEye.getAttribute("data-bill-url")
-        const testImage = screen.getByAltText("justification")
-        expect(testImage.getAttribute("src")).toMatch(imageURL)
+  
+        const modale = screen.getByTestId('modaleFileEmployee')
+        expect(modale).toBeTruthy()
       })
 
       describe("When no image is present in the database", () => {
@@ -134,12 +132,12 @@ describe("Given I am connected as an employee", () => {
             document, onNavigate, firestore, localStorage: window.localStorage
           })
   
-          const iconEye = document.querySelector(`div[data-testid="icon-eye"]`)
-          const handleClickIconEye = jest.fn((e) => billss.handleClickIconEye(iconEye))
+          const eye = document.querySelector(`div[data-testid="icon-eye"]`)
+          const handleClickIconEye = jest.fn((e) => billss.handleClickIconEye(eye))
   
-          iconEye.addEventListener("click", handleClickIconEye(iconEye))
+          eye.addEventListener("click", handleClickIconEye)
   
-          fireEvent.click(iconEye)
+          userEvent.click(eye)
           expect(handleClickIconEye).toHaveBeenCalled()
           expect(screen.getAllByText('No justification image to display')).toBeTruthy()
         })

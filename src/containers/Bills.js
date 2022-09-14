@@ -26,16 +26,18 @@ export default class {
     const imgWidth = Math.floor($('#modaleFile').width() * 0.5)
     if(billUrl === "null"){
       $('#modaleFile').find(".modal-body").html(`<div style='text-align: center;'><p>No justification image to display</p></div>`)
-      $('#modaleFile').modal('show')
+      if (typeof $('#modaleFile').modal === 'function') $('#modaleFile').modal('show')
+      
     }
     else{
-      $('#modaleFile').find(".modal-body").html(`<div style='text-align: center;'><img width=${imgWidth} src=${billUrl} /></div>`)
-      $('#modaleFile').modal('show')
+      $('#modaleFile').find(".modal-body").html(`<div style='text-align: center;'><img width=${imgWidth} src="${billUrl}" alt="justification"/></div>`)
+      if (typeof $('#modaleFile').modal === 'function') $('#modaleFile').modal('show')
     }
     
   }
 
   // no need to cover this function by tests
+  /* istanbul ignore next */
   getBills = () => {
     const userEmail = localStorage.getItem('user') ?
       JSON.parse(localStorage.getItem('user')).email : ""
