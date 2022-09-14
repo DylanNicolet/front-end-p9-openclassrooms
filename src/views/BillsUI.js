@@ -16,17 +16,32 @@ const row = (bill) => {
         ${Actions(bill.fileUrl)}
       </td>
     </tr>
-    `)
-  }
+  `)
+}
 
+//date sort function
+function dateSort() {
+  return function (a,b) {
+    let result = (new Date(a.date) > new Date(b.date)) ? -1 : (new Date(a.date) < new Date(b.date)) ? 1 : 0
+    return result
+  }
+}
+
+//Bug report - Bills: Added custom sorting function using dates
 const rows = (data) => {
-  return (data && data.length) ? data.map(bill => row(bill)).join("") : ""
+  if(data && data.length){
+    let sortedData = data.sort(dateSort())
+    return sortedData.map(bill => row(bill)).join("")
+  }
+  else{
+    return ""
+  }
 }
 
 export default ({ data: bills, loading, error }) => {
   
   const modal = () => (`
-    <div class="modal fade" id="modaleFile" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal fade" id="modaleFile" data-testid="modaleFileEmployee" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">

@@ -20,14 +20,24 @@ export default class {
     this.onNavigate(ROUTES_PATH['NewBill'])
   }
 
+  //Bug Hunt - Bills: Added exception when no images are present for a bill
   handleClickIconEye = (icon) => {
     const billUrl = icon.getAttribute("data-bill-url")
     const imgWidth = Math.floor($('#modaleFile').width() * 0.5)
-    $('#modaleFile').find(".modal-body").html(`<div style='text-align: center;'><img width=${imgWidth} src=${billUrl} /></div>`)
-    $('#modaleFile').modal('show')
+    if(billUrl === "null"){
+      $('#modaleFile').find(".modal-body").html(`<div style='text-align: center;'><p>No justification image to display</p></div>`)
+      if (typeof $('#modaleFile').modal === 'function') $('#modaleFile').modal('show')
+      
+    }
+    else{
+      $('#modaleFile').find(".modal-body").html(`<div style='text-align: center;'><img width=${imgWidth} src="${billUrl}" alt="justification"/></div>`)
+      if (typeof $('#modaleFile').modal === 'function') $('#modaleFile').modal('show')
+    }
+    
   }
 
   // no need to cover this function by tests
+  /* istanbul ignore next */
   getBills = () => {
     const userEmail = localStorage.getItem('user') ?
       JSON.parse(localStorage.getItem('user')).email : ""

@@ -19,7 +19,9 @@ export default class NewBill {
     const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
     const filePath = e.target.value.split(/\\/g)
     const fileName = filePath[filePath.length-1]
-    this.firestore
+    //Bug Hunt - Bills: added if/else statement with input value reset
+    if(file.type === "image/jpg" || file.type === "image/jpeg" || file.type === "image/png"){
+      this.firestore
       .storage
       .ref(`justificatifs/${fileName}`)
       .put(file)
@@ -28,6 +30,12 @@ export default class NewBill {
         this.fileUrl = url
         this.fileName = fileName
       })
+    }
+    
+    else{
+      alert("Incorrect image type, please use jpg, jpeg or png")
+      this.document.querySelector(`input[data-testid="file"]`).value = ""
+    }
   }
   handleSubmit = e => {
     e.preventDefault()
@@ -50,6 +58,7 @@ export default class NewBill {
   }
 
   // no need to cover this function by tests
+  /* istanbul ignore next */
   createBill = (bill) => {
     if (this.firestore) {
       this.firestore
