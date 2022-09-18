@@ -1,40 +1,32 @@
+**Description**:
+This Repository contains all the fixed sources code for project 9 of Open-Classrooms.
+
 **How to run the App localy**:
 
-*clone the project*
-`$ git clone https://github.com/OpenClassrooms-Student-Center/Billed-app-EN.git`
+*clone this repo*
 
 *go to the cloned repo*
-`$ cd Billed-app-EN`
 
 *install npm packages (described in package.json)*
 `$ npm install`
 
-*install live-server to run a local server*
-`$ npm install -g live-server`
+*launch the App with live server extention*
 
-*launch the App*
-`$ live-server`
+**How to login for both sides**:
 
-*then go to :*
-`http://127.0.0.1:8080/`
+*username:* dylan@email.com
+
+*password:* dylan
 
 
 **How to run all tests with Jest:**
 
 `$ npm run test`
 
-**How to run a single test:**
-
-*install jest-cli*
-
-`$npm i -g jest-cli`
-
-*then*
-
-`$jest src/__tests__/your_test_file.js`
-
 **How to see test coverage:**
 
-`http://127.0.0.1:8080/coverage/lcov-report/`
+Go to:
+
+``http://127.0.0.1:5500/coverage/lcov-report/index.html``
 
 
